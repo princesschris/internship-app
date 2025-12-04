@@ -10,7 +10,7 @@ export default function RoleSelectionScreen({ navigation }) {
     <View style={styles.container}>
       {/* Logo */}
       <Image
-        source={require('../assets/favicon.png')}  // Update path to your logo file
+        source={require('../assets/icon.png')}  // Update path to your logo file
         style={styles.logo}
         resizeMode="contain"
       />
