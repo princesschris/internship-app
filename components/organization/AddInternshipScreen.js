@@ -8,7 +8,6 @@ export default function AddInternshipScreen({ navigation }) {
   const [types, setTypes] = useState([]);
 
   const handleAdd = () => {
-    // Mock add; in real app, send to backend
     alert('Internship added!');
     navigation.goBack();
   };
@@ -29,7 +28,6 @@ export default function AddInternshipScreen({ navigation }) {
       >
         <Picker.Item label="California" value="California" />
         <Picker.Item label="New York" value="New York" />
-        {/* Add more states */}
       </Picker>
       
       <TextInput

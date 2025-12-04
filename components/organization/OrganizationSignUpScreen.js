@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const states = ['California', 'New York', 'Texas', 'Florida', 'Illinois'];  // Example US states; expand as needed
+const states = ['California', 'New York', 'Texas', 'Florida', 'Illinois'];  
 
 export default function OrganizationSignUpScreen({ route, navigation }) {
   const { role } = route.params;
@@ -14,7 +14,7 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
   const [localGov, setLocalGov] = useState('');
 
   const handleSignUp = () => {
-    // Basic validation
+
     if (!orgName || !email || !primaryPhone || !state || !localGov) {
       Alert.alert('Error', 'Required fields are missing.');
       return;
@@ -24,14 +24,13 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
       Alert.alert('Error', 'Invalid email address.');
       return;
     }
-    // Mock sign-up; in real app, send to backend
+   
     Alert.alert('Success', `Welcome, ${orgName}!`);
     navigation.navigate('InternshipList', { role });
   };
 
   const handleLogIn = () => {
-    // Navigate to a login screen (create LoginScreen.js later) or back to role selection
-    navigation.navigate('Login');  // Assuming you create a LoginScreen
+    navigation.navigate('Login'); 
   };
 
   return (

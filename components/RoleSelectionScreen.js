@@ -3,21 +3,23 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 export default function RoleSelectionScreen({ navigation }) {
   const handleRoleSelect = (role) => {
-    navigation.navigate('SignUp', { role });  // Pass role to next screen
+    if (role === 'Student') {
+      navigation.navigate('SignUp', { role }); 
+    } else if (role === 'Organization') {
+      navigation.navigate('OrganizationSignUp', { role });  
+        }
   };
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
       <Image
-        source={require('../assets/icon.png')}  // Update path to your logo file
+        source={require('../assets/icon.png')} 
         style={styles.logo}
         resizeMode="contain"
       />
       <Text style={styles.title}>Welcome to Internship App</Text>
       <Text style={styles.subtitle}>Select your role to get started</Text>
       
-      {/* Role Selection Buttons */}
       <TouchableOpacity style={styles.button} onPress={() => handleRoleSelect('Student')}>
         <Text style={styles.buttonText}>I am a Student</Text>
       </TouchableOpacity>
@@ -34,7 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     padding: 20, 
-    backgroundColor: '#f2f8fc'  // Matching the background from previous styling
+    backgroundColor: '#f2f8fc'  
   },
   logo: { 
     width: 150, 
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     marginVertical: 10, 
     width: '80%', 
     alignItems: 'center', 
-    borderRadius: 5  // Optional: Add slight rounding for better UX
+    borderRadius: 5  
   },
   buttonText: { 
     fontSize: 18, 

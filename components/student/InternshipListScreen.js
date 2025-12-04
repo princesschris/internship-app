@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';  
 
-// Mock data
 const mockInternships = [
   { id: 1, title: 'Software Engineer Intern', state: 'California', types: ['Tech', 'Engineering'] },
   { id: 2, title: 'Marketing Intern', state: 'New York', types: ['Marketing'] },
@@ -10,7 +9,7 @@ const mockInternships = [
   
 ];
 
-const states = ['All', 'California', 'New York', 'Texas', 'Florida'];
+const states = ['All', 'Abia', 'Adamawa', 'Akwa-Ibom', 'Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Ebonyi','Edo','Ekiti','Enugu','Gombe','Imo','Jigawa','Kaduna','Kano','Katsina','Kebbi','Kogi','Kwara','Lagos','Nasawara','Niger','Ogun','Osun'];
 const jobTypes = ['Tech', 'Marketing', 'Engineering', 'Data', 'Design'];
 
 export default function InternshipListScreen({ route, navigation }) {
@@ -40,7 +39,6 @@ export default function InternshipListScreen({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Internships ({role})</Text>
       
-      {/* State Filter */}
       <Picker
         selectedValue={selectedState}
         style={styles.picker}
@@ -49,7 +47,6 @@ export default function InternshipListScreen({ route, navigation }) {
         {states.map(state => <Picker.Item key={state} label={state} value={state} />)}
       </Picker>
       
-      {/* Job Type Tags */}
       <View style={styles.tagsContainer}>
         {jobTypes.map(type => (
           <TouchableOpacity
@@ -62,7 +59,6 @@ export default function InternshipListScreen({ route, navigation }) {
         ))}
       </View>
       
-      {/* List */}
       <FlatList
         data={internships}
         keyExtractor={(item) => item.id.toString()}
