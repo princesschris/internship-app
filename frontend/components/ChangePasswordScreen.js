@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet,
-  ScrollView, ActivityIndicator, StatusBar,
-} from 'react-native';
+import {  View, Text, TextInput, TouchableOpacity, StyleSheet,  ScrollView, ActivityIndicator, StatusBar} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCustomAlert } from './CustomAlert';
@@ -169,65 +166,174 @@ export default function ChangePasswordScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F1F5F9' },
-  header: { paddingTop: 55, paddingBottom: 24, paddingHorizontal: 20 },
+  screen: { 
+    flex: 1, 
+    backgroundColor: '#F1F5F9' 
+  },
+  header: { 
+    paddingTop: 55, 
+    paddingBottom: 24, 
+    paddingHorizontal: 20 
+  },
   headerRow: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    marginBottom: 18,
   },
   backBtn: {
-    width: 38, height: 38, borderRadius: 19,
-    backgroundColor: 'rgba(255,255,255,0.15)', justifyContent: 'center', alignItems: 'center',
+    width: 38, 
+    height: 38, 
+    borderRadius: 19,
+    backgroundColor: 'rgba(255,255,255,0.15)', 
+    justifyContent: 'center', 
+    alignItems: 'center',
   },
-  headerTitle: { fontSize: 20, fontWeight: '700', color: '#fff' },
+  headerTitle: { 
+    fontSize: 20, 
+    fontWeight: '700', 
+    color: '#fff' 
+  },
   lockIconBox: {
-    width: 64, height: 64, borderRadius: 20,
+    width: 64, 
+    height: 64, 
+    borderRadius: 20,
     backgroundColor: 'rgba(255,255,255,0.15)',
-    justifyContent: 'center', alignItems: 'center', marginBottom: 10,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginBottom: 10,
   },
-  headerSub: { fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 20 },
-  scroll: { flex: 1 },
-  scrollContent: { padding: 18, paddingBottom: 40 },
+  headerSub: { 
+    fontSize: 14, 
+    color: 'rgba(255,255,255,0.75)', 
+    lineHeight: 20 
+  },
+  scroll: { 
+    flex: 1 
+      },
+  scrollContent: { 
+    padding: 18, 
+    paddingBottom: 40 
+  },
   card: {
-    backgroundColor: '#fff', borderRadius: 18, padding: 18, marginBottom: 14,
-    shadowColor: '#1E3A5F', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 10, elevation: 2,
+    backgroundColor: '#fff', 
+    borderRadius: 18, 
+    padding: 18, 
+    marginBottom: 14,
+    shadowColor: '#1E3A5F', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.06, 
+    shadowRadius: 10, 
+    elevation: 2,
   },
   cardTitle: {
-    fontSize: 15, fontWeight: '700', color: '#0F172A', marginBottom: 16,
-    paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#F1F5F9',
+    fontSize: 15, 
+    fontWeight: '700', 
+    color: '#0F172A', 
+    marginBottom: 16,
+    paddingBottom: 12, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#F1F5F9',
   },
-  fieldBlock: { marginBottom: 14 },
-  fieldLabel: { fontSize: 13, fontWeight: '600', color: '#475569', marginBottom: 6 },
+  fieldBlock: { 
+    marginBottom: 14 
+  },
+  fieldLabel: { 
+    fontSize: 13,
+     fontWeight: '600', 
+     color: '#475569', 
+     marginBottom: 6 
+    },
   passwordRow: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#F8FAFC', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12,
+    flexDirection: 'row', 
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC', 
+    borderWidth: 1, 
+    borderColor: '#E2E8F0', 
+    borderRadius: 12,
   },
-  passwordInput: { flex: 1, padding: 13, fontSize: 15, color: '#1E293B' },
-  eyeBtn: { padding: 13 },
+  passwordInput: { 
+    flex: 1, 
+    padding: 13, 
+    fontSize: 15, 
+    color: '#1E293B' 
+  },
+  eyeBtn: { 
+    padding: 13 
+  },
   requirementsCard: {
-    backgroundColor: '#fff', borderRadius: 18, padding: 16, marginBottom: 14,
-    shadowColor: '#1E3A5F', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 10, elevation: 2,
+    backgroundColor: '#fff', 
+    borderRadius: 18, 
+    padding: 16, 
+    marginBottom: 14,
+    shadowColor: '#1E3A5F', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.06, 
+    shadowRadius: 10, 
+    elevation: 2,
   },
-  requirementsTitle: { fontSize: 13, fontWeight: '700', color: '#475569', marginBottom: 12 },
-  checkItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 8 },
+  requirementsTitle: { 
+    fontSize: 13, 
+    fontWeight: '700', 
+    color: '#475569', 
+    marginBottom: 12 
+  },
+  checkItem: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 8 
+  },
   checkDot: {
-    width: 18, height: 18, borderRadius: 9,
-    justifyContent: 'center', alignItems: 'center', marginRight: 10,
+    width: 18, 
+    height: 18, 
+    borderRadius: 9,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    marginRight: 10,
   },
-  checkText: { fontSize: 13.5, fontWeight: '500' },
+  checkText: { 
+    fontSize: 13.5, 
+    fontWeight: '500' 
+  },
   tipBox: {
-    flexDirection: 'row', alignItems: 'flex-start', gap: 10,
-    backgroundColor: '#EEF4FF', borderRadius: 14, padding: 14, marginBottom: 20,
-    borderWidth: 1, borderColor: '#BFDBFE',
+    flexDirection: 'row', 
+    alignItems: 'flex-start', 
+    gap: 10,
+    backgroundColor: '#EEF4FF', 
+    borderRadius: 14, 
+    padding: 14, 
+    marginBottom: 20,
+    borderWidth: 1, 
+    borderColor: '#BFDBFE',
   },
-  tipText: { flex: 1, fontSize: 13, color: '#1D4ED8', lineHeight: 18 },
+  tipText: { 
+    flex: 1, 
+    fontSize: 13, 
+    color: '#1D4ED8', 
+    lineHeight: 18 
+  },
   saveBtn: {
-    borderRadius: 16, overflow: 'hidden',
-    shadowColor: '#1D4ED8', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 10, elevation: 5,
+    borderRadius: 16, 
+    overflow: 'hidden',
+    shadowColor: '#1D4ED8', 
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.3,
+     shadowRadius: 10, 
+    elevation: 5,
   },
-  saveBtnDisabled: { shadowOpacity: 0 },
+  saveBtnDisabled: { 
+    shadowOpacity: 0 
+  },
   saveBtnGradient: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    gap: 10, paddingVertical: 17,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    gap: 10, 
+    paddingVertical: 17,
   },
-  saveBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },
+  saveBtnText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: '700' 
+  },
 });

@@ -1,29 +1,11 @@
-// screens/AddInternshipScreen.js
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-  Platform,
-  Modal,
-} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,ScrollView,ActivityIndicator,Platform,Modal} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useAuth } from '../contexts/AuthContext';
 import { internshipAPI } from '../services/api';
 import { useCustomAlert } from './CustomAlert';
 
-const nigerianStates = [
-  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa',
-  'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo',
-  'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
-  'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa',
-  'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers',
-  'Sokoto', 'Taraba', 'Yobe', 'Zamfara', 'FCT'
-];
+const nigerianStates = ['Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa','Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo','Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano','Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa','Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers','Sokoto', 'Taraba', 'Yobe', 'Zamfara', 'FCT'];
 
 const jobTypes = ['Tech', 'Marketing', 'Engineering', 'Agriculture', 'Data', 'Design', 'Finance', 'Healthcare', 'Education'];
 
@@ -34,7 +16,6 @@ function formatDate(date) {
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-// ─── Inline date picker bottom sheet (no native dependency) ──────────────────
 function DatePickerModal({ visible, value, label, minDate, onConfirm, onCancel }) {
   const today = new Date();
   const base = value || (minDate && minDate > today ? minDate : today);
@@ -49,7 +30,6 @@ function DatePickerModal({ visible, value, label, minDate, onConfirm, onCancel }
   const handleConfirm = () => {
     const date = new Date(year, month - 1, day);
     const min = minDate || today;
-    // Normalize to start of day for comparison
     const minNorm = new Date(min.getFullYear(), min.getMonth(), min.getDate());
     const dateNorm = new Date(year, month - 1, day);
     if (dateNorm < minNorm) {
@@ -98,7 +78,6 @@ function DatePickerModal({ visible, value, label, minDate, onConfirm, onCancel }
   );
 }
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function AddInternshipScreen({ navigation }) {
   const { userProfile } = useAuth();
   const { showAlert, AlertComponent } = useCustomAlert();
@@ -114,7 +93,7 @@ export default function AddInternshipScreen({ navigation }) {
   const [deadline, setDeadline] = useState(null);
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState(null);
-  const [pickerOpen, setPickerOpen] = useState(null); // 'start' | 'deadline' | null
+  const [pickerOpen, setPickerOpen] = useState(null); 
 
   const today = new Date();
 
@@ -146,16 +125,7 @@ export default function AddInternshipScreen({ navigation }) {
 
     setLoading(true);
     try {
-      await internshipAPI.create({
-        title,
-        description,
-        requirements,
-        duration,
-        state,
-        localGovernment: localGov,
-        types: selectedTypes,
-        startDate: startDate.toISOString(),
-        applicationDeadline: deadline.toISOString(),
+      await internshipAPI.create({title,description,requirements,duration,state,localGovernment: localGov,types: selectedTypes,startDate: startDate.toISOString(),applicationDeadline: deadline.toISOString(),
       });
       showAlert({ title: 'Posted!', message: 'Your internship has been published.' });
       navigation.goBack();
@@ -172,7 +142,6 @@ export default function AddInternshipScreen({ navigation }) {
       {AlertComponent}
       <Text style={styles.pageTitle}>Post New Internship</Text>
 
-      {/* BASICS */}
       <Text style={styles.sectionLabel}>BASICS</Text>
 
       <Text style={styles.label}>Title <Text style={styles.req}>*</Text></Text>
@@ -212,8 +181,6 @@ export default function AddInternshipScreen({ navigation }) {
         value={duration} onChangeText={setDuration} editable={!loading}
         onFocus={() => setFocused('dur')} onBlur={() => setFocused(null)}
       />
-
-      {/* DATES */}
       <Text style={styles.sectionLabel}>DATES</Text>
 
       <View style={styles.dateRow}>
@@ -247,11 +214,10 @@ export default function AddInternshipScreen({ navigation }) {
       </View>
 
       <Text style={styles.dateHint}>
-        ⓘ  Applications automatically close on the deadline date and the listing will be marked expired.
+        Applications automatically close on the deadline date and the listing will be marked expired.
       </Text>
 
-      {/* LOCATION */}
-      <Text style={styles.sectionLabel}>LOCATION</Text>
+     <Text style={styles.sectionLabel}>LOCATION</Text>
 
       <Text style={styles.label}>State <Text style={styles.req}>*</Text></Text>
       <View style={styles.pickerWrapper}>
@@ -263,13 +229,12 @@ export default function AddInternshipScreen({ navigation }) {
       <Text style={styles.label}>Local Government Area <Text style={styles.req}>*</Text></Text>
       <TextInput
         style={[styles.input, focused === 'lga' && styles.inputFocused]}
-        placeholder="e.g. Ikeja"
+        placeholder="e.g. Idemili South"
         placeholderTextColor="#b0b8c1"
         value={localGov} onChangeText={setLocalGov} editable={!loading}
         onFocus={() => setFocused('lga')} onBlur={() => setFocused(null)}
       />
 
-      {/* CATEGORIES */}
       <Text style={styles.sectionLabel}>CATEGORIES</Text>
       <Text style={styles.label}>Select at least one <Text style={styles.req}>*</Text></Text>
       <View style={styles.tagsContainer}>
@@ -287,7 +252,6 @@ export default function AddInternshipScreen({ navigation }) {
         ))}
       </View>
 
-      {/* SUBMIT */}
       <TouchableOpacity
         style={[styles.submitBtn, loading && styles.btnDisabled]}
         onPress={handleAdd}
@@ -302,7 +266,6 @@ export default function AddInternshipScreen({ navigation }) {
 
       <View style={{ height: 50 }} />
 
-      {/* Date Picker Modals */}
       <DatePickerModal
         visible={pickerOpen === 'start'}
         value={startDate}
@@ -324,79 +287,221 @@ export default function AddInternshipScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f7fa' },
-  content: { padding: 20, paddingTop: 28 },
-  pageTitle: { fontSize: 24, fontWeight: '700', color: '#1a202c', marginBottom: 24, letterSpacing: -0.5 },
+  container: { 
+    flex: 1, 
+    backgroundColor: '#f5f7fa' 
+  },
+  content: { 
+    padding: 20, 
+    paddingTop: 28 
+  },
+  pageTitle: { 
+    fontSize: 24, 
+    fontWeight: '700', 
+    color: '#1a202c', 
+    marginBottom: 24, 
+    letterSpacing: -0.5 
+  },
   sectionLabel: {
-    fontSize: 11, fontWeight: '700', color: '#a0aec0',
-    letterSpacing: 1.2, marginBottom: 12, marginTop: 8,
+    fontSize: 11, 
+    fontWeight: '700', 
+    color: '#a0aec0',
+    letterSpacing: 1.2, 
+    marginBottom: 12, 
+    marginTop: 8,
   },
-  label: { fontSize: 13, fontWeight: '600', color: '#4a5568', marginBottom: 6 },
-  req: { color: '#e53e3e' },
+  label: { 
+    fontSize: 13, 
+    fontWeight: '600', 
+    color: '#4a5568', 
+    marginBottom: 6 
+  },
+  req: { 
+    color: '#e53e3e' 
+  },
   input: {
-    backgroundColor: '#fff', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, paddingHorizontal: 14, paddingVertical: 13,
-    fontSize: 15, color: '#1a202c', marginBottom: 14,
+    backgroundColor: '#fff', 
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    paddingHorizontal: 14, 
+    paddingVertical: 13,
+    fontSize: 15, 
+    color: '#1a202c', 
+    marginBottom: 14,
   },
-  inputFocused: { borderColor: '#2563eb' },
-  textArea: { height: 90, textAlignVertical: 'top' },
+  inputFocused: { 
+    borderColor: '#2563eb' 
+  },
+  textArea: { 
+    height: 90, 
+    textAlignVertical: 'top' 
+  },
   pickerWrapper: {
-    backgroundColor: '#fff', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, marginBottom: 14, overflow: 'hidden',
+    backgroundColor: '#fff', 
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    marginBottom: 14, 
+    overflow: 'hidden',
   },
-  picker: { height: 50, color: '#1a202c' },
-  dateRow: { flexDirection: 'row', gap: 12, marginBottom: 0 },
-  dateCol: { flex: 1 },
+  picker: { 
+    height: 50, 
+    color: '#1a202c' 
+  },
+  dateRow: { 
+    flexDirection: 'row', 
+    gap: 12, 
+    marginBottom: 0 
+  },
+  dateCol: { 
+    flex: 1 
+  },
   dateBtn: {
-    flexDirection: 'row', alignItems: 'center', gap: 6,
-    backgroundColor: '#fff', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, paddingHorizontal: 12, paddingVertical: 13, marginBottom: 10,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    gap: 6,
+    backgroundColor: '#fff', 
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    paddingHorizontal: 12, 
+    paddingVertical: 13, 
+    marginBottom: 10,
   },
-  dateBtnActive: { borderColor: '#2563eb', backgroundColor: '#eff6ff' },
-  dateBtnIcon: { fontSize: 14 },
-  dateBtnText: { fontSize: 13, fontWeight: '600', color: '#2563eb', flex: 1 },
-  dateBtnPlaceholder: { color: '#b0b8c1', fontWeight: '400' },
-  dateHint: { fontSize: 12, color: '#a0aec0', lineHeight: 18, marginBottom: 20 },
-  tagsContainer: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 24 },
+  dateBtnActive: { 
+    borderColor: '#2563eb', 
+    backgroundColor: '#eff6ff' 
+  },
+  dateBtnIcon: { 
+    fontSize: 14 
+  },
+  dateBtnText: { 
+    fontSize: 13, 
+    fontWeight: '600', 
+    color: '#2563eb', 
+    flex: 1 
+  },
+  dateBtnPlaceholder: { 
+    color: '#b0b8c1', 
+    fontWeight: '400' 
+  },
+  dateHint: { 
+    fontSize: 12, 
+    color: '#a0aec0', 
+    lineHeight: 18, 
+    marginBottom: 20 
+  },
+  tagsContainer: { 
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    gap: 8, 
+    marginBottom: 24 
+  },
   tag: {
-    paddingVertical: 8, paddingHorizontal: 14,
-    borderWidth: 1.5, borderColor: '#2563eb', borderRadius: 20, backgroundColor: '#fff',
+    paddingVertical: 8, 
+    paddingHorizontal: 14,
+    borderWidth: 1.5, 
+    borderColor: '#2563eb', 
+    borderRadius: 20, 
+    backgroundColor: '#fff',
   },
-  selectedTag: { backgroundColor: '#2563eb' },
-  tagText: { color: '#2563eb', fontSize: 13, fontWeight: '600' },
-  selectedTagText: { color: '#fff' },
+  selectedTag: { 
+    backgroundColor: '#2563eb' 
+  },
+  tagText: { 
+    color: '#2563eb', 
+    fontSize: 13, 
+    fontWeight: '600' 
+  },
+  selectedTagText: { 
+    color: '#fff' 
+  },
   submitBtn: {
-    backgroundColor: '#2563eb', borderRadius: 12, paddingVertical: 16,
-    alignItems: 'center', shadowColor: '#2563eb',
-    shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.28, shadowRadius: 8, elevation: 5,
+    backgroundColor: '#2563eb', 
+    borderRadius: 12, paddingVertical: 16,
+    alignItems: 'center', 
+    shadowColor: '#2563eb',
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.28, shadowRadius: 8, 
+    elevation: 5,
   },
-  btnDisabled: { opacity: 0.55 },
-  submitBtnText: { color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 0.3 },
+  btnDisabled: { 
+    opacity: 0.55 
+  },
+  submitBtnText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: '700', 
+    letterSpacing: 0.3 
+  },
 });
 
 const dpStyles = StyleSheet.create({
-  overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', justifyContent: 'flex-end' },
+  overlay: { 
+    flex: 1, 
+    backgroundColor: 'rgba(0,0,0,0.45)', 
+    justifyContent: 'flex-end' 
+  },
   sheet: {
-    backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24,
-    padding: 24, paddingBottom: Platform.OS === 'ios' ? 40 : 24,
+    backgroundColor: '#fff', 
+    borderTopLeftRadius: 24, 
+    borderTopRightRadius: 24,
+    padding: 24, 
+    paddingBottom: Platform.OS === 'ios' ? 40 : 24,
   },
-  title: { fontSize: 16, fontWeight: '700', color: '#1a202c', textAlign: 'center', marginBottom: 16 },
-  wheelRow: { flexDirection: 'row' },
-  wheel: { flex: 1 },
+  title: { 
+    fontSize: 16, 
+    fontWeight: '700', 
+    color: '#1a202c', 
+    textAlign: 'center', 
+    marginBottom: 16 
+  },
+  wheelRow: { 
+    flexDirection: 'row' 
+  },
+  wheel: { 
+    flex: 1 
+  },
   wheelLabel: {
-    fontSize: 10, fontWeight: '700', color: '#a0aec0',
-    textAlign: 'center', letterSpacing: 1, marginBottom: 4,
+    fontSize: 10, 
+    fontWeight: '700', 
+    color: '#a0aec0',
+    textAlign: 'center', 
+    letterSpacing: 1, 
+    marginBottom: 4,
   },
-  picker: { height: 160 },
-  btnRow: { flexDirection: 'row', gap: 12, marginTop: 16 },
+  picker: { 
+    height: 160 
+  },
+  btnRow: { 
+    flexDirection: 'row', 
+    gap: 12, 
+    marginTop: 16 
+  },
   cancelBtn: {
-    flex: 1, paddingVertical: 14, borderRadius: 12,
-    borderWidth: 1.5, borderColor: '#e2e8f0', alignItems: 'center',
+    flex: 1, 
+    paddingVertical: 14, 
+    borderRadius: 12,
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0', 
+    alignItems: 'center',
   },
-  cancelText: { fontSize: 15, fontWeight: '600', color: '#718096' },
+  cancelText: { 
+    fontSize: 15, 
+    fontWeight: '600', 
+    color: '#718096' 
+  },
   confirmBtn: {
-    flex: 1, paddingVertical: 14, borderRadius: 12,
-    backgroundColor: '#2563eb', alignItems: 'center',
+    flex: 1, 
+    paddingVertical: 14, 
+    borderRadius: 12,
+    backgroundColor: '#2563eb', 
+    alignItems: 'center',
   },
-  confirmText: { fontSize: 15, fontWeight: '700', color: '#fff' },
+  confirmText: { 
+    fontSize: 15, 
+    fontWeight: '700', 
+    color: '#fff' 
+  },
 });
