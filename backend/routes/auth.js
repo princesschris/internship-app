@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
@@ -7,12 +6,10 @@ const User = require('../models/User');
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-// Generate JWT token
 const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
-// ─── Register ────────────────────────────────────────────────────────────────
 router.post('/register', async (req, res) => {
   try {
     const { email, password, role, userData } = req.body;
@@ -46,7 +43,7 @@ router.post('/register', async (req, res) => {
     await user.save();
     const token = generateToken(user._id);
 
-    console.log('✅ User registered:', user._id);
+    console.log('User registered:', user._id);
     res.status(201).json({ message: 'User registered successfully', token, user: user.toJSON() });
   } catch (error) {
     console.error('Register error:', error);
@@ -57,7 +54,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ─── Login ───────────────────────────────────────────────────────────────────
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -83,23 +79,14 @@ router.post('/login', async (req, res) => {
     }
 
     const token = generateToken(user._id);
-    console.log('✅ Login successful:', user._id);
+    console.log('Login successful:', user._id);
     res.status(200).json({ message: 'Login successful', token, user: user.toJSON() });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: { message: 'Login failed', status: 500 } });
   }
 });
-
-// ─── Google OAuth ─────────────────────────────────────────────────────────────
-// POST /api/auth/google
-// Body: { idToken: string, role: 'Student' | 'Organization' }
-//
-// Flow:
-//  1. Verify the Google ID token using google-auth-library
-//  2. If user exists → log them in (role must match)
-//  3. If user doesn't exist → create account using Google profile data
-//  4. Return same { token, user } shape as /login and /register
+// Google auth ( not working)
 router.post('/google', async (req, res) => {
   try {
     const { idToken, role } = req.body;
@@ -117,7 +104,6 @@ router.post('/google', async (req, res) => {
       });
     }
 
-    // Verify Google ID token
     let payload;
     try {
       const ticket = await googleClient.verifyIdToken({
@@ -134,11 +120,9 @@ router.post('/google', async (req, res) => {
 
     const { email, given_name, family_name, name, picture, sub: googleId } = payload;
 
-    // Check if user already exists
     let user = await User.findOne({ email });
 
     if (user) {
-      // Existing user: verify role matches
       if (user.role !== normalizedRole) {
         return res.status(403).json({
           error: {
@@ -147,20 +131,17 @@ router.post('/google', async (req, res) => {
           }
         });
       }
-      // Update Google ID and profile image if not already set
       if (!user.googleId) {
         user.googleId = googleId;
         if (picture && !user.profileImage) user.profileImage = picture;
         await user.save();
       }
     } else {
-      // New user: create account from Google profile
       const userData = {
         email,
         googleId,
         role: normalizedRole,
         profileImage: picture || '',
-        // No password needed for OAuth users — set a random unusable one
         password: `google_oauth_${googleId}_${Date.now()}`,
       };
 
@@ -169,17 +150,16 @@ router.post('/google', async (req, res) => {
         userData.lastName = family_name || '';
         userData.fullName = name || email;
       } else {
-        // Organization: use Google display name as org name (user can update later)
         userData.organizationName = name || email;
       }
 
       user = new User(userData);
       await user.save();
-      console.log('✅ New user via Google OAuth:', user._id);
+      console.log('New user via Google OAuth:', user._id);
     }
 
     const token = generateToken(user._id);
-    console.log('✅ Google OAuth login:', user._id);
+    console.log('Google OAuth login:', user._id);
 
     res.status(200).json({
       message: 'Google sign-in successful',
@@ -192,7 +172,6 @@ router.post('/google', async (req, res) => {
   }
 });
 
-// ─── Verify Token ─────────────────────────────────────────────────────────────
 router.get('/verify', async (req, res) => {
   try {
     const authHeader = req.headers.authorization;

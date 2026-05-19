@@ -1,13 +1,8 @@
-// routes/internships.js
 const express = require('express');
 const router = express.Router();
 const Internship = require('../models/Internship');
 const { authenticateToken, requireRole } = require('../middleware/auth');
 
-// ─── Helper: auto-expire internships past their deadline ─────────────────────
-// Call this before listing internships so stale ones are marked expired.
-// In production you'd run this as a cron job instead (e.g. with node-cron).
-async function expireStaleInternships() {
   try {
     const now = new Date();
     const result = await Internship.updateMany(
@@ -23,19 +18,15 @@ async function expireStaleInternships() {
   } catch (err) {
     console.error('Auto-expire error:', err);
   }
-}
+// }
 
-// ─── GET all internships ──────────────────────────────────────────────────────
 router.get('/', authenticateToken, async (req, res) => {
   try {
-    // Expire any stale listings before returning results
     await expireStaleInternships();
 
     const { state, types, status = 'active' } = req.query;
     let query = { status };
 
-    // Organizations only see their own internships
-    // Use $or to match whether organizationId was stored as ObjectId or string
     if (req.user.role === 'Organization') {
       const orgId = req.userId.toString();
       query.$or = [
@@ -66,7 +57,6 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// ─── GET single internship ────────────────────────────────────────────────────
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
@@ -77,7 +67,6 @@ router.get('/:id', authenticateToken, async (req, res) => {
       });
     }
 
-    // Check and update expired status on the fly
     if (
       internship.status === 'active' &&
       internship.applicationDeadline &&
@@ -97,20 +86,9 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// ─── POST create internship (Organizations only) ──────────────────────────────
 router.post('/', authenticateToken, requireRole(['Organization']), async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      requirements,
-      duration,
-      state,
-      localGovernment,
-      types,
-      startDate,
-      applicationDeadline,
-    } = req.body;
+    const {title,description,requirements,duration,state,localGovernment,types,startDate,applicationDeadline} = req.body;
 
     if (!title || !description || !state || !localGovernment || !types || types.length === 0) {
       return res.status(400).json({
@@ -154,7 +132,7 @@ router.post('/', authenticateToken, requireRole(['Organization']), async (req, r
 
     await internship.save();
 
-    console.log('✅ Internship created:', internship._id);
+    console.log('Internship created:', internship._id);
     res.status(201).json({
       message: 'Internship created successfully',
       internship,
@@ -166,8 +144,6 @@ router.post('/', authenticateToken, requireRole(['Organization']), async (req, r
     });
   }
 });
-
-// ─── PUT update internship (Organizations only, own listings) ─────────────────
 router.put('/:id', authenticateToken, requireRole(['Organization']), async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
@@ -191,7 +167,6 @@ router.put('/:id', authenticateToken, requireRole(['Organization']), async (req,
     delete updates.createdAt;
     updates.updatedAt = new Date();
 
-    // Validate new deadline if provided
     if (updates.applicationDeadline) {
       const newDeadline = new Date(updates.applicationDeadline);
       if (newDeadline <= new Date()) {
@@ -200,7 +175,6 @@ router.put('/:id', authenticateToken, requireRole(['Organization']), async (req,
         });
       }
       updates.applicationDeadline = newDeadline;
-      // Re-activate if it was expired and now has a future deadline
       if (internship.status === 'expired') {
         updates.status = 'active';
       }
@@ -227,8 +201,6 @@ router.put('/:id', authenticateToken, requireRole(['Organization']), async (req,
     });
   }
 });
-
-// ─── DELETE internship (Organizations only, own listings) ─────────────────────
 router.delete('/:id', authenticateToken, requireRole(['Organization']), async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);

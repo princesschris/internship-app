@@ -15,7 +15,6 @@ const io = socketIO(server, {
   }
 });
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -23,7 +22,6 @@ app.io = io;
 const onlineUsers = new Map();
 
 io.on('connection', (socket) => {
-  // console.log('Client connected:', socket.id);
 
   socket.on('join', (userId) => {
     console.log(`User ${userId} joined`);

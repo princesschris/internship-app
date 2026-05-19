@@ -1,11 +1,9 @@
-// routes/applications.js
 const express = require('express');
 const router = express.Router();
 const Application = require('../models/Application');
 const Internship = require('../models/Internship');
 const { authenticateToken, requireRole } = require('../middleware/auth');
 
-// Get applications (filtered by user role)
 router.get('/', authenticateToken, async (req, res) => {
   try {
     const { internshipId } = req.query;
@@ -34,7 +32,6 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// Get single application
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -46,7 +43,6 @@ router.get('/:id', authenticateToken, async (req, res) => {
       });
     }
     
-    // Check authorization
     if (application.studentId.toString() !== req.userId.toString() && 
         application.organizationId.toString() !== req.userId.toString()) {
       return res.status(403).json({ 
@@ -63,7 +59,6 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Create application (Students only)
 router.post('/', authenticateToken, requireRole(['Student']), async (req, res) => {
   try {
     const { internshipId } = req.body;
@@ -74,7 +69,6 @@ router.post('/', authenticateToken, requireRole(['Student']), async (req, res) =
       });
     }
     
-    // Check if internship exists
     const internship = await Internship.findById(internshipId);
     if (!internship) {
       return res.status(404).json({ 
@@ -82,7 +76,6 @@ router.post('/', authenticateToken, requireRole(['Student']), async (req, res) =
       });
     }
     
-    // Check if already applied
     const existingApp = await Application.findOne({
       internshipId,
       studentId: req.userId
@@ -107,7 +100,7 @@ router.post('/', authenticateToken, requireRole(['Student']), async (req, res) =
     
     await application.save();
     
-    console.log('✅ Application created:', application._id);
+    console.log('Application created:', application._id);
     
     res.status(201).json({
       message: 'Application submitted successfully',
@@ -121,7 +114,6 @@ router.post('/', authenticateToken, requireRole(['Student']), async (req, res) =
   }
 });
 
-// Update application status (Organizations only)
 router.patch('/:id/status', authenticateToken, requireRole(['Organization']), async (req, res) => {
   try {
     const { id } = req.params;
@@ -141,7 +133,6 @@ router.patch('/:id/status', authenticateToken, requireRole(['Organization']), as
       });
     }
     
-    // Check if organization owns this application
     if (application.organizationId.toString() !== req.userId.toString()) {
       return res.status(403).json({ 
         error: { message: 'Not authorized to update this application', status: 403 } 
@@ -152,7 +143,7 @@ router.patch('/:id/status', authenticateToken, requireRole(['Organization']), as
     application.updatedAt = new Date();
     await application.save();
     
-    console.log('✅ Application status updated:', application._id, status);
+    console.log('Application status updated:', application._id, status);
     
     res.status(200).json({
       message: `Application ${status} successfully`,
@@ -166,7 +157,6 @@ router.patch('/:id/status', authenticateToken, requireRole(['Organization']), as
   }
 });
 
-// Delete/withdraw application (Students only, own applications)
 router.delete('/:id', authenticateToken, requireRole(['Student']), async (req, res) => {
   try {
     const { id } = req.params;
@@ -179,7 +169,6 @@ router.delete('/:id', authenticateToken, requireRole(['Student']), async (req, r
       });
     }
     
-    // Check ownership
     if (application.studentId.toString() !== req.userId.toString()) {
       return res.status(403).json({ 
         error: { message: 'Not authorized to delete this application', status: 403 } 

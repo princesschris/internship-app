@@ -1,15 +1,12 @@
-// routes/messages.js
 const express = require('express');
 const router = express.Router();
 const Message = require('../models/Message');
 const { authenticateToken } = require('../middleware/auth');
 
-// Get conversations list
 router.get('/conversations', authenticateToken, async (req, res) => {
   try {
     const userId = req.userId;
     
-    // Get all messages where user is sender or recipient
     const messages = await Message.find({
       $or: [
         { senderId: userId },
@@ -17,7 +14,6 @@ router.get('/conversations', authenticateToken, async (req, res) => {
       ]
     }).sort({ timestamp: -1 }).lean();
     
-    // Group by conversation partner
     const conversationsMap = new Map();
     
     messages.forEach(msg => {
@@ -52,13 +48,11 @@ router.get('/conversations', authenticateToken, async (req, res) => {
   }
 });
 
-// Get messages with a specific user
 router.get('/:recipientId', authenticateToken, async (req, res) => {
   try {
     const { recipientId } = req.params;
     const userId = req.userId;
     
-    // Get messages between these two users
     const messages = await Message.find({
       $or: [
         { senderId: userId, recipientId: recipientId },
@@ -66,7 +60,6 @@ router.get('/:recipientId', authenticateToken, async (req, res) => {
       ]
     }).sort({ timestamp: 1 }).lean();
     
-    // Mark received messages as read
     await Message.updateMany(
       { senderId: recipientId, recipientId: userId, read: false },
       { $set: { read: true } }
@@ -81,7 +74,6 @@ router.get('/:recipientId', authenticateToken, async (req, res) => {
   }
 });
 
-// Send message
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { recipientId, text } = req.body;
@@ -92,7 +84,6 @@ router.post('/', authenticateToken, async (req, res) => {
       });
     }
     
-    // Get recipient info
     const User = require('../models/User');
     const recipient = await User.findById(recipientId).select('fullName organizationName');
     
@@ -115,7 +106,6 @@ router.post('/', authenticateToken, async (req, res) => {
     });
     
     await message.save();
-    // console.log('Message sent:', message._id);
     
     res.status(201).json({
       message: 'Message sent successfully',
@@ -161,7 +151,6 @@ router.patch('/:id/read', authenticateToken, async (req, res) => {
   }
 });
 
-// Delete message
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -174,7 +163,6 @@ router.delete('/:id', authenticateToken, async (req, res) => {
       });
     }
     
-    // Only sender can delete
     if (message.senderId.toString() !== req.userId.toString()) {
       return res.status(403).json({ 
         error: { message: 'Not authorized to delete this message', status: 403 } 

@@ -1,4 +1,3 @@
-// middleware/auth.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
@@ -13,12 +12,11 @@ const authenticateToken = async (req, res, next) => {
     }
 
     const token = authHeader.split('Bearer ')[1];
-    console.log('🔑 Verifying token with SECRET:', process.env.JWT_SECRET ? '**SET**' : '**NOT SET**');
-    console.log('🔑 Token:', token.substring(0, 20) + '...');
+    console.log(' Verifying token with SECRET:', process.env.JWT_SECRET ? '**SET**' : '**NOT SET**');
+    console.log('Token:', token.substring(0, 20) + '...');
     
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Fetch user from database
     const user = await User.findById(decoded.userId).select('-password');
     
     if (!user) {

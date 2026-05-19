@@ -1,4 +1,3 @@
-// models/Internship.js
 const mongoose = require('mongoose');
 
 const internshipSchema = new mongoose.Schema({
@@ -48,7 +47,6 @@ const internshipSchema = new mongoose.Schema({
   updatedAt: Date
 });
 
-// Index for faster queries
 internshipSchema.index({ state: 1, status: 1 });
 internshipSchema.index({ organizationId: 1 });
 internshipSchema.index({ types: 1 });

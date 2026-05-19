@@ -1,4 +1,3 @@
-// models/Application.js
 const mongoose = require('mongoose');
 
 const applicationSchema = new mongoose.Schema({
@@ -45,7 +44,6 @@ const applicationSchema = new mongoose.Schema({
   updatedAt: Date
 });
 
-// Index for faster queries
 applicationSchema.index({ studentId: 1, internshipId: 1 }, { unique: true });
 applicationSchema.index({ organizationId: 1, status: 1 });
 applicationSchema.index({ internshipId: 1 });

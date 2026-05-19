@@ -1,10 +1,8 @@
-// routes/users.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const { authenticateToken } = require('../middleware/auth');
 
-// Get current user profile
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     res.status(200).json({
@@ -18,7 +16,6 @@ router.get('/me', authenticateToken, async (req, res) => {
   }
 });
 
-// Get user by ID
 router.get('/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -31,7 +28,6 @@ router.get('/:id', authenticateToken, async (req, res) => {
       });
     }
     
-    // Return only public information
     const publicData = {
       _id: user._id,
       role: user.role,
@@ -51,12 +47,10 @@ router.get('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Update user profile
 router.put('/me', authenticateToken, async (req, res) => {
   try {
     const updates = req.body;
     
-    // Remove fields that shouldn't be updated
     delete updates._id;
     delete updates.email;
     delete updates.password;
@@ -71,7 +65,7 @@ router.put('/me', authenticateToken, async (req, res) => {
       { new: true, runValidators: true }
     ).select('-password');
     
-    console.log('✅ Profile updated:', user._id);
+    console.log('Profile updated:', user._id);
     
     res.status(200).json({
       message: 'Profile updated successfully',
@@ -85,7 +79,6 @@ router.put('/me', authenticateToken, async (req, res) => {
   }
 });
 
-// Change password
 router.post('/change-password', authenticateToken, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -102,7 +95,6 @@ router.post('/change-password', authenticateToken, async (req, res) => {
       });
     }
     
-    // Get user with password
     const user = await User.findById(req.userId);
     
     if (!user) {
@@ -111,7 +103,6 @@ router.post('/change-password', authenticateToken, async (req, res) => {
       });
     }
     
-    // Verify current password
     const isMatch = await user.comparePassword(currentPassword);
     
     if (!isMatch) {
@@ -120,11 +111,10 @@ router.post('/change-password', authenticateToken, async (req, res) => {
       });
     }
     
-    // Update password
     user.password = newPassword;
     await user.save();
     
-    console.log('✅ Password changed:', user._id);
+    console.log('Password changed:', user._id);
     
     res.status(200).json({ 
       message: 'Password changed successfully' 
@@ -137,7 +127,6 @@ router.post('/change-password', authenticateToken, async (req, res) => {
   }
 });
 
-// Delete user account
 router.delete('/me', authenticateToken, async (req, res) => {
   try {
     await User.findByIdAndDelete(req.userId);
