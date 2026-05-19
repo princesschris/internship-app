@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity,StyleSheet,ActivityIndicator,ScrollView,Platform,KeyboardAvoidingView} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useCustomAlert } from '../CustomAlert';
 
-const nigerianStates = [
-  'Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa',
-  'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo',
-  'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano',
-  'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa',
-  'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers',
-  'Sokoto', 'Taraba', 'Yobe', 'Zamfara', 'FCT'
+const nigerianStates = ['Abia', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa','Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo','Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano','Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa','Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers','Sokoto', 'Taraba', 'Yobe', 'Zamfara', 'FCT'
 ];
 
 export default function OrganizationSignUpScreen({ route, navigation }) {
@@ -125,7 +109,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
         </View>
 
         <View style={styles.card}>
-          {/* Google */}
           <TouchableOpacity
             style={[styles.googleButton, googleLoading && styles.buttonDisabled]}
             onPress={handleGoogleSignUp}
@@ -148,7 +131,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
             <View style={styles.dividerLine} />
           </View>
 
-          {/* Organization Details */}
           <Text style={styles.sectionLabel}>Organization Details</Text>
 
           <InputField
@@ -170,7 +152,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
             autoCapitalize="none"
           />
 
-          {/* Location */}
           <Text style={styles.sectionLabel}>Location</Text>
 
           <View style={styles.fieldGroup}>
@@ -198,7 +179,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
             onChangeText={setLocalGov}
           />
 
-          {/* Contact */}
           <Text style={styles.sectionLabel}>Contact</Text>
 
           <InputField
@@ -219,7 +199,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
             keyboardType="phone-pad"
           />
 
-          {/* Security */}
           <Text style={styles.sectionLabel}>Security</Text>
 
           <View style={styles.fieldGroup}>
@@ -278,7 +257,6 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
             </View>
           </View>
 
-          {/* Submit */}
           <TouchableOpacity
             style={[styles.primaryButton, loading && styles.buttonDisabled]}
             onPress={handleSignUp}
@@ -311,73 +289,199 @@ export default function OrganizationSignUpScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  keyboardView: { flex: 1, backgroundColor: '#f5f7fa' },
-  scrollContainer: { flexGrow: 1, padding: 24, paddingTop: 40 },
-  header: { alignItems: 'center', marginBottom: 28 },
-  iconContainer: {
-    width: 64, height: 64, borderRadius: 18, backgroundColor: '#e8f0fe',
-    alignItems: 'center', justifyContent: 'center', marginBottom: 14,
+  keyboardView: { 
+    flex: 1, 
+    backgroundColor: '#f5f7fa' 
   },
-  iconText: { fontSize: 30 },
-  title: { fontSize: 24, fontWeight: '700', color: '#1a202c', letterSpacing: -0.5, marginBottom: 6, textAlign: 'center' },
-  subtitle: { fontSize: 14, color: '#718096', textAlign: 'center', lineHeight: 20 },
+  scrollContainer: { 
+    flexGrow: 1, 
+    padding: 24, 
+    paddingTop: 40
+  },
+  header: { 
+    alignItems: 'center', 
+    marginBottom: 28 
+  },
+  iconContainer: {
+    width: 64, 
+    height: 64, 
+    borderRadius: 18, 
+    backgroundColor: '#e8f0fe',
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginBottom: 14,
+  },
+  iconText: { 
+    fontSize: 30 
+  },
+  title: { 
+    fontSize: 24, 
+    fontWeight: '700', 
+    color: '#1a202c', 
+    letterSpacing: -0.5, 
+    marginBottom: 6, 
+    textAlign: 'center' 
+  },
+  subtitle: { 
+    fontSize: 14, 
+    color: '#718096', 
+    textAlign: 'center', 
+    lineHeight: 20 
+  },
   card: {
-    backgroundColor: '#ffffff', borderRadius: 20, padding: 24,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07, shadowRadius: 12, elevation: 3,
+    backgroundColor: '#ffffff', 
+    borderRadius: 20, 
+    padding: 24,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.07, 
+    shadowRadius: 12, 
+    elevation: 3,
   },
   googleButton: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    backgroundColor: '#ffffff', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, paddingVertical: 13, marginBottom: 20, gap: 10,
-    shadowColor: '#000', shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05, shadowRadius: 3, elevation: 1,
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    backgroundColor: '#ffffff', 
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    paddingVertical: 13, 
+    marginBottom: 20, 
+    gap: 10,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05, 
+    shadowRadius: 3, 
+    elevation: 1,
   },
   googleIcon: {
-    fontSize: 17, fontWeight: '700', color: '#4285F4',
+    fontSize: 17, 
+    fontWeight: '700', 
+    color: '#4285F4',
     fontFamily: Platform.OS === 'ios' ? 'Georgia' : 'serif',
   },
-  googleButtonText: { fontSize: 15, fontWeight: '600', color: '#2d3748' },
-  dividerRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 20, gap: 10 },
-  dividerLine: { flex: 1, height: 1, backgroundColor: '#e2e8f0' },
-  dividerText: { fontSize: 12, color: '#a0aec0', fontWeight: '500' },
+  googleButtonText: { 
+    fontSize: 15, 
+    fontWeight: '600', 
+    color: '#2d3748' 
+  },
+  dividerRow: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    marginBottom: 20,
+    gap: 10 
+  },
+  dividerLine: { 
+    flex: 1, 
+    height: 1, 
+    backgroundColor: '#e2e8f0' 
+  },
+  dividerText: { 
+    fontSize: 12, 
+    color: '#a0aec0', 
+    fontWeight: '500' 
+  },
   sectionLabel: {
-    fontSize: 11, fontWeight: '700', color: '#a0aec0',
-    letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12, marginTop: 6,
+    fontSize: 11, 
+    fontWeight: '700', 
+    color: '#a0aec0',
+    letterSpacing: 1, 
+    textTransform: 'uppercase', 
+    marginBottom: 12, 
+    marginTop: 6,
   },
-  fieldGroup: { marginBottom: 14 },
-  label: { fontSize: 13, fontWeight: '600', color: '#4a5568', marginBottom: 6, letterSpacing: 0.2 },
-  required: { color: '#e53e3e' },
+  fieldGroup: { 
+    marginBottom: 14 
+  },
+  label: { 
+    fontSize: 13, 
+    fontWeight: '600', 
+    color: '#4a5568',
+    marginBottom: 6, 
+    letterSpacing: 0.2 
+    },
+  required: { 
+    color: '#e53e3e' 
+  },
   input: {
-    backgroundColor: '#f7fafc', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, paddingHorizontal: 14, paddingVertical: 13,
-    fontSize: 15, color: '#1a202c',
+    backgroundColor: '#f7fafc', 
+    borderWidth: 1.5, 
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    paddingHorizontal: 14,
+     paddingVertical: 13,
+    fontSize: 15, 
+    color: '#1a202c',
   },
-  inputFocused: { borderColor: '#4285F4', backgroundColor: '#fff' },
+  inputFocused: { 
+    borderColor: '#4285F4', 
+    backgroundColor: '#fff' 
+  },
   pickerWrapper: {
-    backgroundColor: '#f7fafc', borderWidth: 1.5, borderColor: '#e2e8f0',
-    borderRadius: 12, overflow: 'hidden',
+    backgroundColor: '#f7fafc',
+    borderWidth: 1.5,
+    borderColor: '#e2e8f0',
+    borderRadius: 12, 
+    overflow: 'hidden',
   },
-  picker: { height: 50, color: '#1a202c' },
+  picker: { 
+    height: 50, 
+    color: '#1a202c' 
+  },
   passwordWrapper: {
-    flexDirection: 'row', alignItems: 'center',
-    backgroundColor: '#f7fafc', borderWidth: 1.5,
-    borderColor: '#e2e8f0', borderRadius: 12,
+    flexDirection: 'row', 
+    alignItems: 'center',
+    backgroundColor: '#f7fafc', 
+    borderWidth: 1.5,
+    borderColor: '#e2e8f0', 
+    borderRadius: 12,
   },
   passwordInput: {
-    flex: 1, paddingHorizontal: 14, paddingVertical: 13,
-    fontSize: 15, color: '#1a202c',
+    flex: 1, 
+    paddingHorizontal: 14, 
+    paddingVertical: 13,
+    fontSize: 15, 
+    color: '#1a202c',
   },
-  eyeBtn: { paddingHorizontal: 14, paddingVertical: 13 },
+  eyeBtn: { 
+    paddingHorizontal: 14, 
+    paddingVertical: 13 
+  },
   primaryButton: {
-    backgroundColor: '#2563eb', borderRadius: 12, paddingVertical: 15,
-    alignItems: 'center', marginTop: 8, shadowColor: '#2563eb',
-    shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.25, shadowRadius: 8, elevation: 4,
+    backgroundColor: '#2563eb', 
+    borderRadius: 12, 
+    paddingVertical: 15,
+    alignItems: 'center', 
+    marginTop: 8, 
+    shadowColor: '#2563eb',
+    shadowOffset: { width: 0, height: 4 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 8, 
+    elevation: 4,
   },
-  buttonDisabled: { opacity: 0.55 },
-  primaryButtonText: { color: '#ffffff', fontSize: 16, fontWeight: '700', letterSpacing: 0.3 },
-  linkContainer: { marginTop: 18, alignItems: 'center' },
-  linkText: { fontSize: 14, color: '#718096' },
-  linkAccent: { color: '#2563eb', fontWeight: '600' },
-  bottomSpacer: { height: 40 },
+  buttonDisabled: { 
+    opacity: 0.55 
+  },
+  primaryButtonText: { 
+    color: '#ffffff', 
+    fontSize: 16, 
+    fontWeight: '700', 
+    letterSpacing: 0.3 
+  },
+  linkContainer: { 
+    marginTop: 18, 
+    alignItems: 'center' 
+  },
+  linkText: { 
+    fontSize: 14, 
+    color: '#718096' 
+  },
+  linkAccent: { 
+    color: '#2563eb', 
+    fontWeight: '600' 
+  },
+  bottomSpacer: { 
+    height: 40 
+  },
 });
